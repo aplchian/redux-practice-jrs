@@ -1,5 +1,6 @@
-const redux = require('redux')
+const {createStore, applyMiddleware} = require('redux')
 const reactRedux = require('react-redux')
+import thunk from 'redux-thunk'
 
 const rootReducer = (state={ name: ''}, action) => {
   switch(action.type) {
@@ -17,7 +18,7 @@ const setNameReducer = (state,action) => {
   return newState
 }
 
-const store = redux.createStore(rootReducer)
+const store = createStore(rootReducer, applyMiddleware(thunk))
 
 const mapStateToProps = (state) => {
   return { name: state.name }
@@ -26,7 +27,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     setName(name) {
-      dispatch({type: 'SET_NAME', value: name})
+      setTimeout( () => {
+        dispatch({type: 'SET_NAME', value: name})
+      }, 1000)
     }
   }
 }
